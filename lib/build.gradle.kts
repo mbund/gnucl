@@ -32,6 +32,8 @@ dependencies {
     // This dependency is used internally, and not exposed to consumers on their own compile
     // classpath.
     implementation("com.google.guava:guava:31.1-jre")
+
+    implementation(files("libs/components.jar"))
 }
 
 tasks.named<Test>("test") {

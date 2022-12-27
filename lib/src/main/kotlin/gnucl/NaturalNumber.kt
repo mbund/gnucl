@@ -1,3 +1,5 @@
+package gnucl.naturalnumber
+
 import java.math.BigInteger
 
 interface NaturalNumberKernel {
@@ -11,8 +13,12 @@ interface NaturalNumber : NaturalNumberKernel {
     fun subtract(n: NaturalNumber)
 }
 
-class NaturalNumber1L : NaturalNumber {
+open class NaturalNumber1L : NaturalNumber {
     var v: BigInteger
+
+    constructor() {
+        v = 0.toBigInteger()
+    }
 
     constructor(x: Int) {
         v = x.toBigInteger()
@@ -63,8 +69,9 @@ class NaturalNumber1L : NaturalNumber {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (other?.javaClass != javaClass) return false
 
+        // type safety?????
+        // if (other?.javaClass != javaClass) return false
         other as NaturalNumber1L
 
         return v == other.v
@@ -75,10 +82,26 @@ class NaturalNumber1L : NaturalNumber {
     }
 }
 
-typealias NaturalNumber2 = NaturalNumber1L
+class NaturalNumber2 : NaturalNumber1L {
+    constructor() : super()
+    constructor(x: Int) : super(x)
+    constructor(x: String) : super(x)
+}
 
-typealias NaturalNumber2a = NaturalNumber1L
+class NaturalNumber2a : NaturalNumber1L {
+    constructor() : super()
+    constructor(x: Int) : super(x)
+    constructor(x: String) : super(x)
+}
 
-typealias NaturalNumber3 = NaturalNumber1L
+class NaturalNumber3 : NaturalNumber1L {
+    constructor() : super()
+    constructor(x: Int) : super(x)
+    constructor(x: String) : super(x)
+}
 
-typealias NaturalNumber4 = NaturalNumber1L
+class NaturalNumber4 : NaturalNumber1L {
+    constructor() : super()
+    constructor(x: Int) : super(x)
+    constructor(x: String) : super(x)
+}
