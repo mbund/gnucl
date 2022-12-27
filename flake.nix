@@ -11,7 +11,7 @@
   }:
     utils.lib.eachDefaultSystem (
       system: let
-        name = "gocl";
+        name = "gnucl";
         pkgs = import nixpkgs {
           inherit system;
         };
