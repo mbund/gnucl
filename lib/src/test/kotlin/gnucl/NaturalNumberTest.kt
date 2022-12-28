@@ -1,8 +1,7 @@
 package gnucl
 
-import gnucl.naturalnumber.NaturalNumber
-import gnucl.naturalnumber.NaturalNumber1L
-import gnucl.naturalnumber.NaturalNumber2
+// import components.naturalnumber.*
+import gnucl.naturalnumber.*
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -38,5 +37,33 @@ class NaturalNumberTest {
         var x = nn.divideBy10()
         assertEquals(7, x)
         assertEquals(NaturalNumber1L(34), nn)
+    }
+
+    @Test
+    fun `root 2 64`() {
+        val nn: NaturalNumber = NaturalNumber1L(64)
+        nn.root(2)
+        assertEquals(NaturalNumber1L(8), nn)
+    }
+
+    @Test
+    fun `root 3 64`() {
+        val nn: NaturalNumber = NaturalNumber1L(64)
+        nn.root(3)
+        assertEquals(NaturalNumber1L(4), nn)
+    }
+
+    @Test
+    fun `radix`() {
+        assertEquals(10, NaturalNumber.RADIX)
+    }
+
+    @Test
+    fun `copyFrom`() {
+        val nn1: NaturalNumber = NaturalNumber1L(7)
+        val nn2: NaturalNumber = NaturalNumber1L()
+        nn2.copyFrom(nn1)
+        assertEquals(NaturalNumber1L(7), nn1)
+        assertEquals(NaturalNumber1L(7), nn2)
     }
 }

@@ -3,12 +3,8 @@ package gnuclj;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-import gnucl.naturalnumber.NaturalNumber;
-import gnucl.naturalnumber.NaturalNumber1L;
-import gnucl.naturalnumber.NaturalNumber2;
-// import components.naturalnumber.NaturalNumber;
-// import components.naturalnumber.NaturalNumber1L;
-// import components.naturalnumber.NaturalNumber2;
+import gnucl.naturalnumber.*;
+// import components.naturalnumber.*;
 
 class NaturalNumberTestJava {
     @Test
@@ -18,5 +14,10 @@ class NaturalNumberTestJava {
         nn1.add(nn2);
         assertEquals(new NaturalNumber1L(13), nn1);
         assertEquals(new NaturalNumber1L(5), nn2);
+    }
+
+    @Test
+    public void radix() {
+        assertEquals(10, NaturalNumber.RADIX);
     }
 }
