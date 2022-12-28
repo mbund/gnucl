@@ -61,9 +61,18 @@ class NaturalNumberTest {
     @Test
     fun `copyFrom`() {
         val nn1: NaturalNumber = NaturalNumber1L(7)
-        val nn2: NaturalNumber = NaturalNumber1L()
+        val nn2: NaturalNumber = NaturalNumber1L(3)
         nn2.copyFrom(nn1)
         assertEquals(NaturalNumber1L(7), nn1)
+        assertEquals(NaturalNumber1L(7), nn2)
+    }
+
+    @Test
+    fun `transferFrom`() {
+        val nn1: NaturalNumber = NaturalNumber1L(7)
+        val nn2: NaturalNumber = NaturalNumber1L(3)
+        nn2.transferFrom(nn1)
+        assertEquals(NaturalNumber1L(0), nn1)
         assertEquals(NaturalNumber1L(7), nn2)
     }
 }

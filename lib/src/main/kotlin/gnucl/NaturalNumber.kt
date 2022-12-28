@@ -1,8 +1,9 @@
 package gnucl.naturalnumber
 
+import Standard
 import java.math.BigInteger
 
-interface NaturalNumberKernel {
+interface NaturalNumberKernel : Standard<NaturalNumber> {
     fun multiplyBy10(k: Int)
     fun divideBy10(): Int
     fun isZero(): Boolean
@@ -164,6 +165,21 @@ open class NaturalNumberSecondary : NaturalNumber {
 
     override fun toInt(): Int {
         return v.toInt()
+    }
+
+    override fun clear() {
+        v = 0.toBigInteger()
+    }
+
+    override fun newInstance(): NaturalNumber {
+        return NaturalNumberSecondary()
+    }
+
+    override fun transferFrom(source: NaturalNumber) {
+        if (source is NaturalNumberSecondary) {
+            v = source.v
+            source.clear()
+        }
     }
 }
 
