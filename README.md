@@ -14,7 +14,7 @@ Drop-in replacement library which is redistributable under a free license. For t
 - [ ] Map
 - [x] NaturalNumber
 - [ ] Program :stop_sign:
-- [ ] Queue
+- [x] Queue
 - [ ] Random
 - [ ] Sequence :construction:
 - [ ] Set

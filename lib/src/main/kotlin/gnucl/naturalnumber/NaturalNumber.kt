@@ -34,7 +34,7 @@ interface NaturalNumber : NaturalNumberKernel {
 }
 
 sealed class NaturalNumberImpl : NaturalNumberSecondary {
-    var v: BigInteger
+    private var v: BigInteger
 
     constructor() {
         v = 0.toBigInteger()
@@ -278,13 +278,6 @@ class NaturalNumber1L : NaturalNumberImpl {
 
 @Suppress("unused")
 class NaturalNumber2 : NaturalNumberImpl {
-    constructor() : super()
-    constructor(x: Int) : super(x)
-    constructor(x: String) : super(x)
-}
-
-@Suppress("unused")
-class NaturalNumber2a : NaturalNumberImpl {
     constructor() : super()
     constructor(x: Int) : super(x)
     constructor(x: String) : super(x)
