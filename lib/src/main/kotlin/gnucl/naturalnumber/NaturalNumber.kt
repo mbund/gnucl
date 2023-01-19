@@ -33,7 +33,7 @@ interface NaturalNumber : NaturalNumberKernel {
     }
 }
 
-open class NaturalNumberSecondary : NaturalNumber {
+sealed class NaturalNumberImpl : NaturalNumberSecondary {
     var v: BigInteger
 
     constructor() {
@@ -57,24 +57,21 @@ open class NaturalNumberSecondary : NaturalNumber {
     }
 
     override fun add(n: NaturalNumber) {
-        if (n is NaturalNumberSecondary) {
-            v += n.v
-            verify()
-        }
+        n as NaturalNumberImpl
+        v += n.v
+        verify()
     }
 
     override fun subtract(n: NaturalNumber) {
-        if (n is NaturalNumberSecondary) {
-            v -= n.v
-            verify()
-        }
+        n as NaturalNumberImpl
+        v -= n.v
+        verify()
     }
 
     override fun multiply(n: NaturalNumber) {
-        if (n is NaturalNumberSecondary) {
-            v *= n.v
-            verify()
-        }
+        n as NaturalNumberImpl
+        v *= n.v
+        verify()
     }
 
     override fun multiplyBy10(k: Int) {
@@ -84,7 +81,7 @@ open class NaturalNumberSecondary : NaturalNumber {
     }
 
     override fun divideBy10(): Int {
-        var d = v.remainder(10.toBigInteger())
+        val d = v.remainder(10.toBigInteger())
         v /= 10.toBigInteger()
         verify()
         return d.toInt()
@@ -99,7 +96,7 @@ open class NaturalNumberSecondary : NaturalNumber {
 
         // type safety?????
         // if (other?.javaClass != javaClass) return false
-        other as NaturalNumberSecondary
+        other as NaturalNumberImpl
 
         return v == other.v
     }
@@ -117,7 +114,8 @@ open class NaturalNumberSecondary : NaturalNumber {
     }
 
     override fun copyFrom(n: NaturalNumber) {
-        if (n is NaturalNumberSecondary) v = n.v
+        n as NaturalNumberImpl
+        v = n.v
     }
 
     override fun decrement() {
@@ -126,10 +124,9 @@ open class NaturalNumberSecondary : NaturalNumber {
     }
 
     override fun divide(n: NaturalNumber) {
-        if (n is NaturalNumberSecondary) {
-            v /= n.v
-            verify()
-        }
+        n as NaturalNumberImpl
+        v /= n.v
+        verify()
     }
 
     override fun increment() {
@@ -172,42 +169,136 @@ open class NaturalNumberSecondary : NaturalNumber {
     }
 
     override fun newInstance(): NaturalNumber {
-        return NaturalNumberSecondary()
+        return NaturalNumber1L()
     }
 
     override fun transferFrom(source: NaturalNumber) {
-        if (source is NaturalNumberSecondary) {
-            v = source.v
-            source.clear()
-        }
+        source as NaturalNumberImpl
+        v = source.v
+        source.clear()
     }
 }
 
-class NaturalNumber1L : NaturalNumberSecondary {
+abstract class NaturalNumberSecondary : NaturalNumber {
+    private fun toNaturalNumberImpl(nn: NaturalNumber): NaturalNumberImpl {
+        var xs = ""
+        while (!nn.isZero()) xs += nn.divideBy10()
+        xs.forEach { x -> nn.multiplyBy10(x.digitToInt()) }
+
+        return NaturalNumber1L(xs.toList().reversed().toString())
+    }
+
+    private fun fromNaturalNumberImpl(nn: NaturalNumberImpl) {
+        this.transferFrom(nn)
+    }
+
+    override fun add(n: NaturalNumber) {
+        val nn = toNaturalNumberImpl(this)
+        nn.add(n)
+        fromNaturalNumberImpl(nn)
+    }
+
+    override fun canConvertToInt(): Boolean {
+        return toNaturalNumberImpl(this).canConvertToInt()
+    }
+
+    override fun canSetFromString(s: String): Boolean {
+        return toNaturalNumberImpl(this).canSetFromString(s)
+    }
+
+    override fun copyFrom(n: NaturalNumber) {
+        fromNaturalNumberImpl(toNaturalNumberImpl(n))
+    }
+
+    override fun decrement() {
+        val nn = toNaturalNumberImpl(this)
+        nn.decrement()
+        fromNaturalNumberImpl(nn)
+    }
+
+    override fun divide(n: NaturalNumber) {
+        val nn = toNaturalNumberImpl(this)
+        nn.divide(n)
+        fromNaturalNumberImpl(nn)
+    }
+
+    override fun increment() {
+        val nn = toNaturalNumberImpl(this)
+        nn.increment()
+        fromNaturalNumberImpl(nn)
+    }
+
+    override fun multiply(n: NaturalNumber) {
+        val nn = toNaturalNumberImpl(this)
+        nn.multiply(n)
+        fromNaturalNumberImpl(nn)
+    }
+
+    override fun power(p: Int) {
+        val nn = toNaturalNumberImpl(this)
+        nn.power(p)
+        fromNaturalNumberImpl(nn)
+    }
+
+    override fun root(r: Int) {
+        val nn = toNaturalNumberImpl(this)
+        nn.root(r)
+        fromNaturalNumberImpl(nn)
+    }
+
+    override fun setFromInt(i: Int) {
+        val nn = toNaturalNumberImpl(this)
+        nn.setFromInt(i)
+        fromNaturalNumberImpl(nn)
+    }
+
+    override fun setFromString(s: String) {
+        val nn = toNaturalNumberImpl(this)
+        nn.setFromString(s)
+        fromNaturalNumberImpl(nn)
+    }
+
+    override fun subtract(n: NaturalNumber) {
+        val nn = toNaturalNumberImpl(this)
+        nn.subtract(n)
+        fromNaturalNumberImpl(nn)
+    }
+
+    override fun toInt(): Int {
+        return toNaturalNumberImpl(this).toInt()
+    }
+}
+
+@Suppress("unused")
+class NaturalNumber1L : NaturalNumberImpl {
     constructor() : super()
     constructor(x: Int) : super(x)
     constructor(x: String) : super(x)
 }
 
-class NaturalNumber2 : NaturalNumberSecondary {
+@Suppress("unused")
+class NaturalNumber2 : NaturalNumberImpl {
     constructor() : super()
     constructor(x: Int) : super(x)
     constructor(x: String) : super(x)
 }
 
-class NaturalNumber2a : NaturalNumberSecondary {
+@Suppress("unused")
+class NaturalNumber2a : NaturalNumberImpl {
     constructor() : super()
     constructor(x: Int) : super(x)
     constructor(x: String) : super(x)
 }
 
-class NaturalNumber3 : NaturalNumberSecondary {
+@Suppress("unused")
+class NaturalNumber3 : NaturalNumberImpl {
     constructor() : super()
     constructor(x: Int) : super(x)
     constructor(x: String) : super(x)
 }
 
-class NaturalNumber4 : NaturalNumberSecondary {
+@Suppress("unused")
+class NaturalNumber4 : NaturalNumberImpl {
     constructor() : super()
     constructor(x: Int) : super(x)
     constructor(x: String) : super(x)

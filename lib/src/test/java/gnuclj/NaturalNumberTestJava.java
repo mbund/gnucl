@@ -1,12 +1,12 @@
 package gnuclj;
 
+//import components.naturalnumber.*;
+import gnucl.naturalnumber.*;
+
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-import gnucl.naturalnumber.*;
-// import components.naturalnumber.*;
-
-class NaturalNumberTestJava {
+class NaturalNumberJavaTest {
     @Test
     public void add() {
         NaturalNumber nn1 = new NaturalNumber1L(8);

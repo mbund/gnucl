@@ -21,7 +21,6 @@
           packages = with pkgs; [
             kotlin
             gradle
-            java-language-server
           ];
         };
       }

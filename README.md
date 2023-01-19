@@ -10,16 +10,12 @@ Drop-in replacement library which is redistributable under a free license. For t
 
 - [ ] AMPMClock :stop_sign:
 - [ ] BinaryTree
-- [ ] FormatChecker
-- [ ] IdNameTable :stop_sign:
 - [ ] List
 - [ ] Map
 - [x] NaturalNumber
-- [ ] Prioritizer
 - [ ] Program :stop_sign:
 - [ ] Queue
 - [ ] Random
-- [ ] Reporter
 - [ ] Sequence :construction:
 - [ ] Set
 - [ ] SimpleReader
@@ -29,9 +25,10 @@ Drop-in replacement library which is redistributable under a free license. For t
 - [x] Standard
 - [ ] Statement :stop_sign:
 - [ ] Stopwatch
-- [ ] Text
-- [ ] Tokenizer
 - [ ] Tree
+- [ ] Utilities FormatChecker
+- [ ] Utilities Reporter
+- [ ] Utilities Tokenizer
 - [ ] XMLTree
 
 :construction: under construction
