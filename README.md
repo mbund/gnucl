@@ -11,17 +11,17 @@ Drop-in replacement library which is redistributable under a free license. For t
 - [ ] AMPMClock :stop_sign:
 - [ ] BinaryTree
 - [ ] List
-- [ ] Map
+- [ ] Map :construction:
 - [x] NaturalNumber
 - [ ] Program :stop_sign:
 - [x] Queue
 - [ ] Random
-- [ ] Sequence :construction:
-- [ ] Set
-- [ ] SimpleReader
-- [ ] SimpleWriter
+- [x] Sequence
+- [ ] Set :construction:
+- [ ] SimpleReader :construction:
+- [ ] SimpleWriter :construction:
 - [ ] SortingMachine
-- [ ] Stack
+- [ ] Stack :construction:
 - [x] Standard
 - [ ] Statement :stop_sign:
 - [ ] Stopwatch

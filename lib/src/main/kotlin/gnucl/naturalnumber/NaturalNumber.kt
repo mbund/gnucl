@@ -4,9 +4,10 @@ import Standard
 import java.math.BigInteger
 
 interface NaturalNumberKernel : Standard<NaturalNumber> {
-    fun multiplyBy10(k: Int)
     fun divideBy10(): Int
     fun isZero(): Boolean
+    fun multiplyBy10(k: Int)
+
     companion object {
         const val RADIX: Int = 10
     }
@@ -27,57 +28,45 @@ interface NaturalNumber : NaturalNumberKernel {
     fun setFromString(s: String)
     fun subtract(n: NaturalNumber)
     fun toInt(): Int
-
+    
     companion object {
         const val RADIX = NaturalNumberKernel.RADIX
     }
 }
 
 sealed class NaturalNumberImpl : NaturalNumberSecondary {
-    private var v: BigInteger
-
+    internal var v: BigInteger
+    
     constructor() {
-        v = 0.toBigInteger()
+        this.v = 0.toBigInteger()
     }
 
     constructor(x: Int) {
-        v = x.toBigInteger()
+        this.v = x.toBigInteger()
         verify()
     }
-
+    
     constructor(x: String) {
         v = x.toBigInteger()
         verify()
     }
-
+    
     private fun verify() {
         if (v < 0.toBigInteger()) {
             throw Exception("NaturalNumber must be greater than zero")
         }
     }
 
-    override fun add(n: NaturalNumber) {
-        n as NaturalNumberImpl
-        v += n.v
-        verify()
-    }
-
-    override fun subtract(n: NaturalNumber) {
-        n as NaturalNumberImpl
-        v -= n.v
-        verify()
-    }
-
-    override fun multiply(n: NaturalNumber) {
-        n as NaturalNumberImpl
-        v *= n.v
-        verify()
-    }
+    // Kernel implementation
 
     override fun multiplyBy10(k: Int) {
         v *= 10.toBigInteger()
         v += k.toBigInteger()
         verify()
+    }
+
+    override fun isZero(): Boolean {
+        return v == 0.toBigInteger()
     }
 
     override fun divideBy10(): Int {
@@ -87,24 +76,14 @@ sealed class NaturalNumberImpl : NaturalNumberSecondary {
         return d.toInt()
     }
 
-    override fun isZero(): Boolean {
-        return v == 0.toBigInteger()
+    // Implementation
+    
+    override fun add(n: NaturalNumber) {
+        n as NaturalNumberImpl
+        v += n.v
+        verify()
     }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-
-        // type safety?????
-        // if (other?.javaClass != javaClass) return false
-        other as NaturalNumberImpl
-
-        return v == other.v
-    }
-
-    override fun hashCode(): Int {
-        return v.toInt()
-    }
-
+    
     override fun canConvertToInt(): Boolean {
         return v <= Int.MAX_VALUE.toBigInteger()
     }
@@ -134,16 +113,22 @@ sealed class NaturalNumberImpl : NaturalNumberSecondary {
         verify()
     }
 
+    override fun multiply(n: NaturalNumber) {
+        n as NaturalNumberImpl
+        v *= n.v
+        verify()
+    }
+
     override fun power(p: Int) {
         v.pow(p)
     }
-
+    
     // https://stackoverflow.com/a/32553759
     override fun root(r: Int) {
         if (r < 2) throw Exception("Violation of: r >= 2")
 
         var b = 0.toBigInteger().flipBit(1 + v.bitLength() / r)
-
+        
         var a: BigInteger
         do {
             a = b
@@ -151,18 +136,26 @@ sealed class NaturalNumberImpl : NaturalNumberSecondary {
         } while (b < a)
         v = a
     }
-
+    
     override fun setFromInt(i: Int) {
         v = i.toBigInteger()
     }
-
+    
     override fun setFromString(s: String) {
         v = s.toBigInteger()
     }
 
+    override fun subtract(n: NaturalNumber) {
+        n as NaturalNumberImpl
+        v -= n.v
+        verify()
+    }
+    
     override fun toInt(): Int {
         return v.toInt()
     }
+
+    // GNUCL Standard methods
 
     override fun clear() {
         v = 0.toBigInteger()
@@ -177,20 +170,44 @@ sealed class NaturalNumberImpl : NaturalNumberSecondary {
         v = source.v
         source.clear()
     }
+
+    // Java methods
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+
+        if (other is NaturalNumberImpl) {
+            return v == other.v
+        }
+
+        return super.equals(other)
+    }
+
+    override fun hashCode(): Int {
+        return v.toInt()
+    }
+
+    override fun toString(): String {
+        return v.toString()
+    }
 }
 
 abstract class NaturalNumberSecondary : NaturalNumber {
     private fun toNaturalNumberImpl(nn: NaturalNumber): NaturalNumberImpl {
-        var xs = ""
-        while (!nn.isZero()) xs += nn.divideBy10()
-        xs.forEach { x -> nn.multiplyBy10(x.digitToInt()) }
+        val builder = StringBuilder()
 
-        return NaturalNumber1L(xs.toList().reversed().toString())
+        while (!nn.isZero()) builder.append(nn.divideBy10())
+        builder.forEach { x -> nn.multiplyBy10(x.digitToInt()) }
+
+        return NaturalNumber1L(builder.reversed().toString())
     }
 
     private fun fromNaturalNumberImpl(nn: NaturalNumberImpl) {
-        this.transferFrom(nn)
+        this.clear()
+        nn.v.toString().forEach { c -> this.multiplyBy10(c.digitToInt()) }
     }
+
+    // Implementation
 
     override fun add(n: NaturalNumber) {
         val nn = toNaturalNumberImpl(this)
@@ -260,13 +277,25 @@ abstract class NaturalNumberSecondary : NaturalNumber {
 
     override fun subtract(n: NaturalNumber) {
         val nn = toNaturalNumberImpl(this)
-        nn.subtract(n)
+        nn.subtract(toNaturalNumberImpl(n))
         fromNaturalNumberImpl(nn)
     }
 
     override fun toInt(): Int {
         return toNaturalNumberImpl(this).toInt()
     }
+
+    // Java methods
+
+    override fun equals(other: Any?): Boolean {
+        return if (other is NaturalNumber) {
+            toNaturalNumberImpl(this) == toNaturalNumberImpl(other)
+        } else false
+    }
+
+    override fun hashCode(): Int = toNaturalNumberImpl(this).hashCode()
+
+    override fun toString(): String = toNaturalNumberImpl(this).toString()
 }
 
 @Suppress("unused")

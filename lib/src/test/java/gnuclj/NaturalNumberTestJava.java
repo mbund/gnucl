@@ -1,7 +1,7 @@
 package gnuclj;
 
-//import components.naturalnumber.*;
-import gnucl.naturalnumber.*;
+import components.naturalnumber.*;
+//import gnucl.naturalnumber.*;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
